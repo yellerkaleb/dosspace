@@ -9,11 +9,25 @@ export function getFilePath(dbFile: string): string {
 
 /** Insert a new object into the database */
 export function insert(dbFile: string, key: string, obj: Workspace) {
+  //process.stdout.write('test');
+  //console.log(`Inserting object into file: ${getFilePath(dbFile)}`);
   const data = fs.readFileSync(getFilePath(dbFile), 'utf8')
   const json = JSON.parse(data)
   json[key] ||= []
   json[key].push(obj)
   fs.writeFileSync(getFilePath(dbFile), JSON.stringify(json))
+
+  //console.log(key)//*****GECKO
+  //console.log(`Inserted text: ${JSON.stringify(json)}`)//*****GECKO
+
+  /*// Verify insertion
+  const newData = fs.readFileSync(getFilePath(dbFile), 'utf8');
+  const newJson = JSON.parse(newData);
+  const inserted = newJson[key].some((item: Workspace) => item.id === obj.id);
+
+  if (!inserted) {
+    throw new Error(`${dbFile} Failed to insert object with id ${obj.id}`);
+  }*/
 }
 
 /** Update an existing object in the database */

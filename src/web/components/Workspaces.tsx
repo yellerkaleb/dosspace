@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import ReadMe from './ReadMe'
 import WorkspaceDetails from './WorkspaceDetails'
 
+//console.log("WS")
+
 function Workspaces() {
   const navigate = useNavigate()
 

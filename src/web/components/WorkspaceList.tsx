@@ -3,6 +3,8 @@ import '../style/WorkspaceList.css'
 import DosspaceApi from '../api'
 import { useNavigate } from 'react-router'
 
+//console.log("WL")
+
 export interface HomepageWorkspace {
   id: string
   title: string

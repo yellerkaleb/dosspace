@@ -28,6 +28,7 @@ export function createWorkspace(dbString: string): Workspace {
   }
   insert(dbString, 'workspaces', workspace)
   return workspace
+  //return getWorkspace(dbString,workspace.id)
 }
 
 /** Update a workspace in the database */

@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import DosspaceApi from '../api'
 
+//console.log("WD")
+
+
 interface Shipment {
   id: string
   description: string
@@ -40,5 +43,13 @@ export default function WorkspaceDetails() {
     fetchWorkspace()
   }, [workspaceId])
 
-  return <></>
+  return <>
+    <li>{workspace?.title}</li>
+    <li>ID #{workspace?.id}</li>
+    <li>Build #{workspace?.buildShipments?.[0]?.buildNumber}</li>
+    <li>Order #{workspace?.buildShipments[0]?.shipments[0]?.orderNumber}</li>  
+    <li>Cost ${workspace?.buildShipments[0]?.shipments[0]?.cost}</li>  
+    <li>Qty: {workspace?.buildShipments[0]?.shipments[0]?.description}</li>
+  </>;
+
 }
