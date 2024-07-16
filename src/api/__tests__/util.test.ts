@@ -9,7 +9,7 @@ const testDbString = '../database.txt'
 
 describe('Util tests', () => {
   function createMockUuid() {// Creates random unique ID for a mock object
-    return uuidv4() //*GECKO: Why mock id if it's not available in db txt file?
+    return uuidv4()
   }
 
   //const workspaceId = createMockUuid()
@@ -62,11 +62,12 @@ describe('Util tests', () => {
   
   describe('updateWorkspace', () => {
     it('updates a workspace', () => {
+      const wTitle="Arnav's Shipping"
       const workspace = utils.createWorkspace(testDbString)
-      workspace.title = "Arnav's Shipping"
+      workspace.title = wTitle
       utils.updateWorkspace(testDbString, workspace)
       const updatedWorkspace = utils.getWorkspace(testDbString, workspace.id)
-      expect(updatedWorkspace.title).toEqual("Arnav's Shipping")
+      expect(updatedWorkspace.title).toEqual(wTitle)
     })
   })
 

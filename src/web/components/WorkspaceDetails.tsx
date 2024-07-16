@@ -43,13 +43,15 @@ export default function WorkspaceDetails() {
     fetchWorkspace()
   }, [workspaceId])
 
-  return <>
-    <li>{workspace?.title}</li>
-    <li>ID #{workspace?.id}</li>
-    <li>Build #{workspace?.buildShipments?.[0]?.buildNumber}</li>
-    <li>Order #{workspace?.buildShipments[0]?.shipments[0]?.orderNumber}</li>  
-    <li>Cost ${workspace?.buildShipments[0]?.shipments[0]?.cost}</li>  
-    <li>Qty: {workspace?.buildShipments[0]?.shipments[0]?.description}</li>
-  </>;
+    if (!workspace?.id) return <>RESET or No record</>
 
+    return <>
+      <li>{workspace?.title}</li>
+      <li>ID #{workspace?.id}</li>
+      <li>Build #{workspace?.buildShipments?.[0]?.buildNumber}</li>
+      <li>Order #{workspace?.buildShipments[0]?.shipments[0]?.orderNumber}</li>  
+      <li>Cost ${workspace?.buildShipments[0]?.shipments[0]?.cost}</li>  
+      <li>Qty: {workspace?.buildShipments[0]?.shipments[0]?.description}</li>
+    </>
+  
 }

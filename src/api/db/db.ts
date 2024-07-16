@@ -18,7 +18,7 @@ export function insert(dbFile: string, key: string, obj: Workspace) {//*GECKO */
       throw err
 
     } else {
-      //fs.accessSync(filePath, fs.constants.W_OK);
+      //fs.accessSync(filePath, fs.constants.W_OK); //FAILING
 
       // File can be written to, proceed with reading and writing
       try {
@@ -65,10 +65,9 @@ export function update(dbFile: string, key: 'workspaces', id: string, obj: Works
       throw err
 
     } else {
-
       // File can be written to, proceed with reading and writing
       try {
-        //fs.accessSync(filePath, fs.constants.W_OK);
+        //fs.accessSync(filePath, fs.constants.W_OK); //FAILING
         const data = fs.readFileSync(filePath, 'utf8');
         const json: { workspaces: Workspace[] } = JSON.parse(data)
         
