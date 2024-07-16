@@ -4,17 +4,16 @@ import mock from 'mock-fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 
-//const testDbString = '../database.test.txt'
-const testDbString = '../database.txt' //*****GECKO: replaced. The DB name provided above does not exist
+const testDbString = '../database.txt'
+//const testDbString = '../database.txt' //*GECKO: replaced. The DB name provided above does not exist
 
 describe('Util tests', () => {
-  function createMockUuid() {
-    // Creates random unique ID for a mock object
-    return uuidv4() //*****GECKO: Why mock id if it's not available in db txt file?
+  function createMockUuid() {// Creates random unique ID for a mock object
+    return uuidv4() //*GECKO: Why mock id if it's not available in db txt file?
   }
 
   //const workspaceId = createMockUuid()
-  const workspaceId ="fb374bf1-c76b-44b3-945b-ee03d35d7a3c" //*****GECKO: test, taken from DB available IDs
+  const workspaceId ="fb374bf1-c76b-44b3-945b-ee03d35d7a3c" //*GECKO: test, taken from DB available IDs
 
   beforeEach(() => {
     mock({ [path.resolve(__dirname, testDbString)]: '' })
@@ -57,15 +56,17 @@ describe('Util tests', () => {
       expect(workspace.buildShipments[0].shipments).toHaveLength(1)
       expect(workspace.buildShipments[0].buildNumber).toEqual('')
       expect(workspace.buildShipments[0].shipments[0].description).toEqual('')
+
     })
   })
-
+  
   describe('updateWorkspace', () => {
     it('updates a workspace', () => {
       const workspace = utils.createWorkspace(testDbString)
       workspace.title = "Arnav's Shipping"
       utils.updateWorkspace(testDbString, workspace)
       const updatedWorkspace = utils.getWorkspace(testDbString, workspace.id)
+      //console.log("UW: ",updatedWorkspace) //*GECKO 
       expect(updatedWorkspace.title).toEqual("Arnav's Shipping")
     })
   })

@@ -1,7 +1,1 @@
-{"workspaces":[
-    {"id":"fb374bf1-c76b-44b3-945b-ee03d35d7a3c","title":"Wiley's Shipping","buildShipments":[{"id":"acc8e129-532b-47d2-85ac-e156c68b08b6","buildNumber":"A82D2-108","shipments":[{"id":"51f71d3e-e4b3-4462-86f2-7c9f60aaa86d","description":"64 units","orderNumber":"121-5821131-5985042","cost":107643}]}]}
-
-
-
-]}
-
+{"workspaces":[{"id":"fb374bf1-c76b-44b3-945b-ee03d35d7a3c","title":"Wiley's Shipping","buildShipments":[{"id":"afba42d6-c72f-45ca-88f8-fa2d7e1b286a","buildNumber":"A82D2-108","shipments":[{"id":"2ef40354-60c8-42c3-a9c1-30ce1187b382","description":"64 units","orderNumber":"121-5821131-5985042","cost":107643}]}]}]}
