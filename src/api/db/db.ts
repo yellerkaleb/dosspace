@@ -14,10 +14,12 @@ export function insert(dbFile: string, key: string, obj: Workspace) {//*GECKO */
   // Check write permissions using fs.access
   fs.access(filePath, fs.constants.W_OK, (err) => {
     if (err) {
-      console.error(`Cannot write to ${filePath}: ${err}`);
-      throw err; // Throw the error to be caught by outer try-catch or handle it accordingly
+      console.error(`Cannot write to ${filePath}: ${err}`)
+      throw err
 
     } else {
+      //fs.accessSync(filePath, fs.constants.W_OK);
+
       // File can be written to, proceed with reading and writing
       try {
         const data = fs.readFileSync(filePath, 'utf8');
@@ -27,21 +29,21 @@ export function insert(dbFile: string, key: string, obj: Workspace) {//*GECKO */
         json[key].push(obj);
 
         //console.log('PRE WRITE: ' + JSON.stringify(json)); //*GECKO */ For debugging
-        fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf8');
+        fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf8')
         //console.log('Write operation completed successfully');//*GECKO
 
       } catch (readWriteError) {//*GECKO
-        console.error('Error during file read/write:', readWriteError);
-        throw readWriteError; // Re-throw to be caught by outer try-catch or handle it accordingly
+        console.error('Error during file read/write:', readWriteError)
+        throw readWriteError
 
       }
 
-    }
-  });
+    }  
+  })
 }
 
 /** Insert a new object into the database */
-export function insert2(dbFile: string, key: string, obj: Workspace) {
+export function insertOld(dbFile: string, key: string, obj: Workspace) {
   const data = fs.readFileSync(getFilePath(dbFile), 'utf8')
   const json = JSON.parse(data)
   json[key] ||= []
@@ -59,35 +61,37 @@ export function update(dbFile: string, key: 'workspaces', id: string, obj: Works
   // Check write permissions using fs.access
   fs.access(filePath, fs.constants.W_OK, (err) => {
     if (err) {
-      console.error(`Cannot write to ${filePath}: ${err}`);
-      throw err; // Throw the error to be caught by outer try-catch or handle it accordingly
+      console.error(`Cannot write to ${filePath}: ${err}`)
+      throw err
 
     } else {
+
       // File can be written to, proceed with reading and writing
       try {
+        //fs.accessSync(filePath, fs.constants.W_OK);
         const data = fs.readFileSync(filePath, 'utf8');
         const json: { workspaces: Workspace[] } = JSON.parse(data)
         
-        //console.log("U2: ",json)//*GECKO
         const updatingIndex = json[key].findIndex((item) => item.id === id)
         if (updatingIndex === -1) {
-          throw new Error('[update] Could not find object with id "' + id + '", '+ json)
+          throw new Error('[update] Could not find object with id "' + id + '"')//+'\n'+ json)
         }
         json[key].splice(updatingIndex, 1, obj)
-        fs.writeFileSync(getFilePath(dbFile), JSON.stringify(json))
+        fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf8');
+
       
       } catch (readWriteError) {//*GECKO
         console.error('Error during file read/write:', readWriteError);
-        throw readWriteError; // Re-throw to be caught by outer try-catch or handle it accordingly
+        throw readWriteError; 
 
       }
 
     }
-  });
+  })
 }
 
 /** Update an existing object in the database */
-export function update2(dbFile: string, key: 'workspaces', id: string, obj: Workspace) {
+export function updateOld(dbFile: string, key: 'workspaces', id: string, obj: Workspace) {
   //console.log("U1:",id,obj)//*GECKO
   const data = fs.readFileSync(getFilePath(dbFile), 'utf8')
   const json: { workspaces: Workspace[] } = JSON.parse(data)
@@ -100,6 +104,36 @@ export function update2(dbFile: string, key: 'workspaces', id: string, obj: Work
   fs.writeFileSync(getFilePath(dbFile), JSON.stringify(json))
 }
 
+/** Return a single object from the database */
+export function findOne(dbFile: string, key: 'workspaces', id: string) {
+  const filePath = getFilePath(dbFile);
+  
+  /*fs.access(filePath, fs.constants.W_OK, (err) => {
+    if (err) {
+      console.error(`Cannot write to ${filePath}: ${err}`)
+      throw err
+
+    } else {
+      //fs.accessSync(filePath, fs.constants.W_OK);
+      try {*/
+        const data = fs.readFileSync(filePath, 'utf8')
+        const json: { workspaces: Workspace[] } = JSON.parse(data)
+        const result = json[key].find((item) => item.id === id)
+        if (!result) {
+          throw new Error('[findOne] Could not find item with id "' + id +'"') // + '\n ' + JSON.stringify(json))
+        }
+        return result
+
+      /*} catch (findError) {//*GECKO
+        console.error('Error during finding:', findError);
+        throw findError; 
+
+      }
+
+    }
+  })*/
+  
+}
 
 /** Delete an existing object from the database */
 export function deleteObj(dbFile: string, key: 'workspaces', id: string) {
@@ -111,46 +145,6 @@ export function deleteObj(dbFile: string, key: 'workspaces', id: string) {
   }
   json[key].splice(removingIndex, 1)
   fs.writeFileSync(getFilePath(dbFile), JSON.stringify(json))
-}
-
-export function findOne2(dbFile: string, key: 'workspaces', id: string) {
-  const filePath = getFilePath(dbFile);
-
-  fs.access(filePath, fs.constants.W_OK, (err) => {
-    if (err) {
-      console.error(`Cannot write to ${filePath}: ${err}`);
-      throw err; // Throw the error to be caught by outer try-catch or handle it accordingly
-
-    } else {
-      // File can be written to, proceed with reading and writing
-      try {
-        const data = fs.readFileSync(getFilePath(dbFile), 'utf8')
-        const json: { workspaces: Workspace[] } = JSON.parse(data)
-        //console.log("FO: ",json) //*GECKO 
-        const result = json[key].find((item) => item.id === id)
-        if (!result) {
-          throw new Error('[findOne] Could not find item with id "' + id + '", ' + JSON.stringify(json))
-        }
-        return result
-      } catch (readWriteError) {//*GECKO
-        console.error('Error during file read/write:', readWriteError);
-        throw readWriteError; // Re-throw to be caught by outer try-catch or handle it accordingly
-      }
-    }
-  })
-}
-
-/** Return a single object from the database */
-export function findOne(dbFile: string, key: 'workspaces', id: string) {
-  const data = fs.readFileSync(getFilePath(dbFile), 'utf8')
-
-  const json: { workspaces: Workspace[] } = JSON.parse(data)
-  //console.log("FO: ",json) //*GECKO 
-  const result = json[key].find((item) => item.id === id)
-  if (!result) {
-    throw new Error('[findOne] Could not find item with id "' + id + '"\n ' + JSON.stringify(json))
-  }
-  return result
 }
 
 /** Return all objects from the database */

@@ -66,7 +66,6 @@ describe('Util tests', () => {
       workspace.title = "Arnav's Shipping"
       utils.updateWorkspace(testDbString, workspace)
       const updatedWorkspace = utils.getWorkspace(testDbString, workspace.id)
-      //console.log("UW: ",updatedWorkspace) //*GECKO 
       expect(updatedWorkspace.title).toEqual("Arnav's Shipping")
     })
   })
