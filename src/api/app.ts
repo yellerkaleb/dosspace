@@ -4,7 +4,6 @@ import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace } from '.
 import { reset } from './db/db'
 
 const app = express()
-const defUUID='fb374bf1-c76b-44b3-945b-ee03d35d7a3c';
 
 app.use(cors())
 app.use(express.json())
@@ -14,7 +13,7 @@ const dbString = '../database.txt'
 
 /** Admin endpoint for resetting the database */
 app.get('/reset', (req, res) => {
-  reset(dbString,defUUID)
+  reset(dbString)
   res.send('Reset database')
 })
 

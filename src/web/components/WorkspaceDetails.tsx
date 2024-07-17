@@ -43,8 +43,9 @@ export default function WorkspaceDetails() {
     fetchWorkspace()
   }, [workspaceId])
 
-    if (!workspace?.id) return <>RESET or No record</>
+    if (!workspace?.id) return <>RESET or No record</>//GECKO
 
+    //GECKO
     return <>
       <li>{workspace?.title}</li>
       <li>ID #{workspace?.id}</li>
