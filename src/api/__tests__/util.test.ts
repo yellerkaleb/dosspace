@@ -5,7 +5,7 @@ import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 
 
-const testDbString = '../database.txt'//GECKO replaced '../database.test.txt'.  The DB name provided above does not exist
+const testDbString = '../database.json'//GECKO replaced '../database.test.txt' and made JSON for better readability.  The original DB name does not exist
 //const workspaceId = createMockUuid()
 const uuidWiley='fb374bf1-c76b-44b3-945b-ee03d35d7a3c'//GECKO
 const workspaceId =uuidWiley //GECKO: test, taken from DB available IDs

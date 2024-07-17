@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.json())
 
 const port = 8080
-const dbString = '../database.txt'
+const dbString = '../database.json' //GECKO better readability
 
 /** Admin endpoint for resetting the database */
 app.get('/reset', (req, res) => {

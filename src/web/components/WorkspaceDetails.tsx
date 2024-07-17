@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import DosspaceApi from '../api'
 
-//console.log("WD")
-
 
 interface Shipment {
   id: string
