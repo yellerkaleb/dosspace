@@ -47,6 +47,37 @@ export default function WorkspaceDetails() {
 
     //GECKO
     return <>
+      <div>
+        <h2>Workspace Details</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Workspace ID</th>
+              <th>Title</th>
+              <th>Build Number</th>
+              <th>Shipment Description</th>
+              <th>Order Number</th>
+              <th>Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {workspace.buildShipments.map((buildShipment) =>
+              buildShipment.shipments.map((shipment) => (
+                <tr key={shipment.id}>
+                  <td>{workspace.id}</td>
+                  <td>{workspace.title}</td>
+                  <td>{buildShipment.buildNumber}</td>
+                  <td>{shipment.description}</td>
+                  <td>{shipment.orderNumber}</td>
+                  <td>${shipment.cost}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+  </>
+    /*return <>
       <li>{workspace?.title}</li>
       <li>ID #{workspace?.id}</li>
       <li>Build #{workspace?.buildShipments?.[0]?.buildNumber}</li>
@@ -54,5 +85,5 @@ export default function WorkspaceDetails() {
       <li>Cost ${workspace?.buildShipments[0]?.shipments[0]?.cost}</li>  
       <li>Qty: {workspace?.buildShipments[0]?.shipments[0]?.description}</li>
     </>
-  
+  */
 }
