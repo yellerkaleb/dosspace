@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace } from './util'
+import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace, addWorkspaceTable } from './util'
 import { reset } from './db/db'
 
 const app = express()
@@ -42,6 +42,13 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   res.json({ workspace: createWorkspace(dbString) })
 })
+
+app.post('/:workspaceId/tables', (req, res) => {
+  const workspaceId = req.body.workspace.id
+  const newTable = req.body.newTable
+
+  res.json({ workspace: addWorkspaceTable(dbString, workspaceId,newTable) })
+});
 
 module.exports = app
 

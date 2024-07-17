@@ -11,217 +11,103 @@ export function getFilePath(dbFile: string): string {
 
 /** Insert a new object into the database */
 export function insert(dbFile: string, key: string, obj: Workspace) {//GECKO 
-  const filePath = getFilePath(dbFile);
+  const filePath = getFilePath(dbFile) //GECKO
+  const data = fs.readFileSync(filePath, 'utf8')
+  const json = JSON.parse(data)
 
-  if (!useAsync){
-    const data = fs.readFileSync(filePath, 'utf8')
-    const json = JSON.parse(data)
-    json[key] ||= []
-    json[key].push(obj)
-  
-    fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf8');
-    console.log('Write operation completed successfully');
-    
-    return
-  }
+  json[key] ||= []
+  json[key].push(obj)
 
-  //GEKO *****************TESTS BELOW
-  // Check write permissions using fs.access
-  fs.access(filePath, fs.constants.W_OK, (err) => {
-    if (err) {
-      console.error(`Cannot write to ${filePath}: ${err}`)
-      throw err
-
-    } else {
-      //fs.accessSync(filePath, fs.constants.W_OK); //FAILING
-
-      // File can be written to, proceed with reading and writing
-      try {
-        const data = fs.readFileSync(filePath, 'utf8');
-        const json = JSON.parse(data);
-        
-        json[key] = json[key] || [];
-        json[key].push(obj);
-
-        //console.log('PRE WRITE: ' + JSON.stringify(json)); //GECKO  For debugging
-        fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf8')
-        //console.log('Write operation completed successfully');//GECKO
-
-      } catch (err) {//GECKO
-        console.error('Error during insert:', err)
-        throw err
-
-      }
-
-    }  
-  })
+  fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf8');
+  console.log('Write operation completed successfully');
 }
 
 /** Update an existing object in the database */
 export function update(dbFile: string, key: 'workspaces', id: string, obj: Workspace) {//GECKO 
-  const filePath = getFilePath(dbFile);
+  const filePath = getFilePath(dbFile) //GECKO
+  const data = fs.readFileSync(filePath, 'utf8')
+  const json: { workspaces: Workspace[] } = JSON.parse(data)
+  const updatingIndex = json[key].findIndex((item) => item.id === id)
 
-  if (!useAsync){
-    const data = fs.readFileSync(filePath, 'utf8')
-    const json: { workspaces: Workspace[] } = JSON.parse(data)
-    //console.log("U2: ",json)//GECKO
-    const updatingIndex = json[key].findIndex((item) => item.id === id)
-    if (updatingIndex === -1) {
-      throw new Error('Could not find object with id "' + id + '"')
-    }
-    json[key].splice(updatingIndex, 1, obj)
-    fs.writeFileSync(filePath, JSON.stringify(json))
-    
-    return
+  if (updatingIndex === -1) {
+    throw new Error('Could not find object with id "' + id + '"')
   }
 
-  //GEKO *****************TESTS BELOW
-  // Check write permissions using fs.access
-  fs.access(filePath, fs.constants.W_OK, (err) => {
-    if (err) {
-      console.error(`Cannot write to ${filePath}: ${err}`)
-      throw err
-
-    } else {
-      // File can be written to, proceed with reading and writing
-      try {
-        //fs.accessSync(filePath, fs.constants.W_OK); //FAILING
-        const data = fs.readFileSync(filePath, 'utf8');
-        const json: { workspaces: Workspace[] } = JSON.parse(data)
-        
-        const updatingIndex = json[key].findIndex((item) => item.id === id)
-        if (updatingIndex === -1) {
-          throw new Error('[update] Could not find object with id "' + id + '"')//+'\n'+ json)
-        }
-        json[key].splice(updatingIndex, 1, obj)
-        fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf8');
-     
-      } catch (err) {//GECKO
-        console.error('Error during update:', err);
-        throw err; 
-
-      }
-
-    }
-  })
+  json[key].splice(updatingIndex, 1, obj)
+  fs.writeFileSync(filePath, JSON.stringify(json))
 }
 
 /** Return a single object from the database */
 export function findOne(dbFile: string, key: 'workspaces', id: string) {
   const filePath = getFilePath(dbFile)
-
   const data = fs.readFileSync(filePath, 'utf8')
   const json: { workspaces: Workspace[] } = JSON.parse(data)
   const result = json[key].find((item) => item.id === id)
+
   if (!result) {
     throw new Error('[findOne] Could not find item with id "' + id +'"') // + '\n ' + JSON.stringify(json))
   }
-  return result
 
+  return result
 }
 
 /** Delete an existing object from the database */
 export function deleteObj(dbFile: string, key: 'workspaces', id: string) {
-  const filePath = getFilePath(dbFile)
+  const filePath = getFilePath(dbFile) //GECKO
   const data = fs.readFileSync(filePath, 'utf8')
   const json: { workspaces: Workspace[] } = JSON.parse(data)
   const removingIndex = json[key].findIndex((item) => item.id === id)
+
   if (removingIndex === -1) {
     throw new Error('Could not find object with id "' + id + '"')
   }
+
   json[key].splice(removingIndex, 1)
   fs.writeFileSync(filePath, JSON.stringify(json))
 }
 
 /** Return all objects from the database */
 export function all(dbFile: string, key: string) {
-  const filePath = getFilePath(dbFile)
+  const filePath = getFilePath(dbFile) //GECKO
   const data = fs.readFileSync(filePath, 'utf8')
   const json = JSON.parse(data)
+
   return json[key]
 }
 
 /** Reset the database to a single workspace and invoice */
 export function reset(dbFile: string, uuid?: string) {
-  const filePath = getFilePath(dbFile);
+  const filePath = getFilePath(dbFile) //GECKO
   const uuidWiley='fb374bf1-c76b-44b3-945b-ee03d35d7a3c'//GECKO
+  const workspaces: Workspace[] = [
+    {
+      //id: uuid ?? uuidv4(),
+      id: uuidWiley,//GECKO TEST
+      title: "Wiley's Shipping",
+      buildShipments: [
+        {
+          id: uuidv4(),
+          buildNumber: 'A82D2-108',
+          // Initialize the workspace with a single empty build shipment
+          shipments: [
+            {
+              id: uuidv4(),
+              description: '64 units',
+              orderNumber: '121-5821131-5985042',
+              cost: 107_643,
+            },
+          ],
+        },
+      ],
+    },
+  ]
 
-  
-  if (!useAsync){
-    const workspaces: Workspace[] = [
-      {
-        //id: uuid ?? uuidv4(),
-        id: uuidWiley,//GECKO TEST
-        title: "Wiley's Shipping",
-        buildShipments: [
-          {
-            id: uuidv4(),
-            buildNumber: 'A82D2-108',
-            // Initialize the workspace with a single empty build shipment
-            shipments: [
-              {
-                id: uuidv4(),
-                description: '64 units',
-                orderNumber: '121-5821131-5985042',
-                cost: 107_643,
-              },
-            ],
-          },
-        ],
-      },
-    ]
-    fs.writeFileSync(filePath, JSON.stringify({ workspaces }))
-  
-    return
-
-  }
-
-  //GEKO *****************TESTS BELOW
-
-  fs.access(filePath, fs.constants.W_OK, (err) => {
-    if (err) {
-      console.error(`Cannot write to ${filePath}: ${err}`)
-      throw err
-
-    } else {
-      // File can be written to, proceed with reading and writing
-      try {
-        const workspaces: Workspace[] = [
-          {
-            //id: uuid ?? uuidv4(),
-            id: uuidWiley,//GECKO TEST
-            title: "Wiley's Shipping",
-            buildShipments: [
-              {
-                id: uuidv4(),
-                buildNumber: 'A82D2-108',
-                // Initialize the workspace with a single empty build shipment
-                shipments: [
-                  {
-                    id: uuidv4(),
-                    description: '64 units',
-                    orderNumber: '121-5821131-5985042',
-                    cost: 107_643,
-                  },
-                ],
-              },
-            ],
-          },
-        ]
-        fs.writeFileSync(filePath, JSON.stringify({ workspaces },null,2))
-      
-      } catch (err) {//GECKO
-        console.error('Error during reset:', err)
-        throw err
-
-      }
-
-    }  
-  })
+  fs.writeFileSync(filePath, JSON.stringify({ workspaces }))
 }
 
+/** GECKO Testing read/write */
 export function testWrite(dbFile:string,data:string='bla bla blah'){//GECKO
-  const filePath = getFilePath(dbFile);
+  const filePath = getFilePath(dbFile) //GECKO
 
   try {
       var fData:string
@@ -232,8 +118,26 @@ export function testWrite(dbFile:string,data:string='bla bla blah'){//GECKO
       fData = fs.readFileSync(filePath, 'utf8')
       fs.writeFileSync(filePath, fData + data + '3' + '\n')
       console.log('Test written successfully');
+
   } catch (error) {
       console.error('Error writing test file:', error);
+
   }
     
+}
+
+/** GECKO Add table to workspace */
+export function addTable(dbFile: string, id: string, newTable: Workspace) {
+  const filePath = getFilePath(dbFile) //GECKO
+  const data = fs.readFileSync(filePath, 'utf8')
+  /*const json: { workspaces: Workspace[] } = JSON.parse(data)
+  const updatingIndex = json[key].findIndex((item) => item.id === id)
+
+  if (updatingIndex === -1) {
+    throw new Error('Could not find object with id "' + id + '"')
+  }
+
+  json[key].splice(updatingIndex, 1, obj)
+  fs.writeFileSync(filePath, JSON.stringify(json))
+    */
 }

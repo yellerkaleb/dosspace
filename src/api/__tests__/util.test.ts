@@ -1,5 +1,5 @@
 import * as utils from '../util'
-import { reset,useAsync } from '../db/db'
+import { reset } from '../db/db'
 import mock from 'mock-fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
@@ -42,6 +42,7 @@ describe('reset', () => { //GECKO
 describe('getWorkspaces', () => {
   it('returns the workspaces from the db', () => {
     const workspaces = utils.getWorkspaces(testDbString)
+
     expect(workspaces).toBeDefined()
     expect(workspaces).toHaveLength(1)
     expect(workspaces[0].id).toBe(workspaceId)
@@ -50,31 +51,31 @@ describe('getWorkspaces', () => {
     expect(workspaces[0].buildShipments[0].buildNumber).toEqual('A82D2-108')
     expect(workspaces[0].buildShipments[0].shipments).toHaveLength(1)
     expect(workspaces[0].buildShipments[0].shipments[0].description).toEqual('64 units')
-    //console.log (JSON.stringify(workspaces)) //GECKO
   })
 })
 
 describe('getWorkspace', () => {
   it('returns the queried workspace from the db', () => {
     const workspace = utils.getWorkspace(testDbString, workspaceId)
+
     expect(workspace).toBeDefined()
     expect(workspace.title).toEqual("Wiley's Shipping")
     expect(workspace.buildShipments).toHaveLength(1)
-    //console.log (JSON.stringify(workspace)) //GECKO
   })
 })
 
 describe('createWorkspace', () => {
   it('creates a new workspace', () => {
     const workspace = utils.createWorkspace(testDbString)
+
     workspace.title=''
+
     expect(workspace).toBeDefined()
     expect(workspace.title).toEqual('')
     expect(workspace.buildShipments).toHaveLength(1)
     expect(workspace.buildShipments[0].shipments).toHaveLength(1)
     expect(workspace.buildShipments[0].buildNumber).toEqual('')
     expect(workspace.buildShipments[0].shipments[0].description).toEqual('')
-    //console.log (JSON.stringify(workspace)) //GECKO
 
   })
 })
@@ -83,13 +84,12 @@ describe('updateWorkspace', () => {
   it('updates a workspace', () => {
     const wTitle="Arnav's Shipping"
     const workspace = utils.createWorkspace(testDbString)
+
     workspace.title = wTitle
-    //console.log ('uw1: ',JSON.stringify(workspace)) //GECKO
-
-    if (useAsync) return //GECKO in ASYNC mode, following lines fail, however update still occurs despite no call to update function, the const workspace seems bound to database text file
-
     utils.updateWorkspace(testDbString, workspace)
+
     const updatedWorkspace = utils.getWorkspace(testDbString, workspace.id)
+    
     expect(updatedWorkspace.title).toEqual(wTitle) 
   })
 })
