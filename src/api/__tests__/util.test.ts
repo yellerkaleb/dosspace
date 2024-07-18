@@ -93,19 +93,3 @@ describe('updateWorkspace', () => {
     expect(updatedWorkspace.title).toEqual(wTitle) 
   })
 })
-  
-/*
-const testWritingDb = '../testwriting.txt'//GECKO
-
-describe('testWriting', () => { //GECKO
-  it('Test Writing', () => {
-    return utils.testWriting(testWritingDb,Math.random().toString())
-  })
-})
-
-describe('testWriting2', () => { //GECKO
-  it('Test Writing', () => {
-    return utils.testWriting(testWritingDb,Math.random().toString())
-  })
-})
-*/

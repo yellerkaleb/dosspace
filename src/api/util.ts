@@ -1,4 +1,4 @@
-import { all, findOne, insert, update,reset,testWrite,addTable } from './db/db'
+import { all, findOne, insert, update,reset,addTable } from './db/db'
 import { Workspace } from './types'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -42,14 +42,9 @@ export function resetWorkspace(dbString: string) {
   reset(dbString)
 }
 
-/** GECKO testing read/write */
-export function testWriting(dbString:string,data:string='bla bla blah'){//gecko
-  testWrite(dbString,data)
-}
-
 /** GECKO add table to workspace */
-export function addWorkspaceTable(dbString:string,id:string,newTable:Workspace):Workspace{
+export function addWorkspace(dbString:string,id:string,newTable:Workspace):Workspace {
+  console.log('Util[AW]')
   addTable(dbString, id, newTable)
   return findOne(dbString, 'workspaces', id)
-
 }

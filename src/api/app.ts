@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace, addWorkspaceTable } from './util'
+import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace, addWorkspace } from './util'
 import { reset } from './db/db'
 
 const app = express()
@@ -43,12 +43,27 @@ app.post('/', (req, res) => {
   res.json({ workspace: createWorkspace(dbString) })
 })
 
-app.post('/:workspaceId/tables', (req, res) => {
-  const workspaceId = req.body.workspace.id
-  const newTable = req.body.newTable
-
-  res.json({ workspace: addWorkspaceTable(dbString, workspaceId,newTable) })
-});
+/*GECKO add table to workspace*/
+app.get('/:workspaceId/add', (req, res) => {
+  const { workspaceId } = req.params
+  const { build, order, cost, description } = req.query
+  console.log('APP[add]')
+  const newTable = {
+    build: build || '',
+    order: order || '',
+    cost: cost || '',
+    description: description || '',
+    id: '', // mock id
+    title: '', // mock title
+    buildShipments: [], // mock buildShipments
+  }
+  try {
+    const updatedWorkspace = addWorkspace(dbString, workspaceId, newTable)
+    res.json({ workspace: updatedWorkspace })
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to add table to workspace' })
+  }
+})
 
 module.exports = app
 

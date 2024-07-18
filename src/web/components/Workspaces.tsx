@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import ReadMe from './ReadMe'
 import WorkspaceDetails from './WorkspaceDetails'
+import WorkspaceAddTable from './WorkspaceAddTable'
 
 //console.log("WS")
 
@@ -20,6 +21,7 @@ function Workspaces() {
           <Route path="/readme" element={<ReadMe />} />
           <Route path="*" element={<WorkspaceList />} />
           <Route path="/:workspaceId" element={<WorkspaceDetails />} />
+          <Route path="/:workspaceId/add" element={<WorkspaceAddTable />} />
         </Routes>
       </div>
     </>

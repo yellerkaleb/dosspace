@@ -17,19 +17,19 @@
           ]
         },
         {
-          "id": "2-7e872b01-ab08-4fb6-8f27-8d2777a88433",
-          "buildNumber": "2-A82D2-108",
+          "id": "2e872b01-ab08-4fb6-8f27-8d2777a88433",
+          "buildNumber": "2A82D2-108",
           "shipments": [
             {
-              "id": "2-793b3cf1-5a73-44f1-8dff-83142be307d6",
+              "id": "293b3cf1-5a73-44f1-8dff-83142be307d6",
               "description": "264 units",
-              "orderNumber": "2-121-5821131-5985042",
+              "orderNumber": "2121-5821131-5985042",
               "cost": 2107643
             },
                         {
-              "id": "3-793b3cf1-5a73-44f1-8dff-83142be307d6",
+              "id": "393b3cf1-5a73-44f1-8dff-83142be307d6",
               "description": "364 units",
-              "orderNumber": "3-121-5821131-5985042",
+              "orderNumber": "3121-5821131-5985042",
               "cost": 3107643
             }
 

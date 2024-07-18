@@ -105,31 +105,15 @@ export function reset(dbFile: string, uuid?: string) {
   fs.writeFileSync(filePath, JSON.stringify({ workspaces }))
 }
 
-/** GECKO Testing read/write */
-export function testWrite(dbFile:string,data:string='bla bla blah'){//GECKO
-  const filePath = getFilePath(dbFile) //GECKO
-
-  try {
-      var fData:string
-      fData = fs.readFileSync(filePath, 'utf8')
-      fs.writeFileSync(filePath, fData + data + '\n')
-      fData = fs.readFileSync(filePath, 'utf8')
-      fs.writeFileSync(filePath, fData + data + '2' + '\n')
-      fData = fs.readFileSync(filePath, 'utf8')
-      fs.writeFileSync(filePath, fData + data + '3' + '\n')
-      console.log('Test written successfully');
-
-  } catch (error) {
-      console.error('Error writing test file:', error);
-
-  }
-    
-}
 
 /** GECKO Add table to workspace */
 export function addTable(dbFile: string, id: string, newTable: Workspace) {
   const filePath = getFilePath(dbFile) //GECKO
   const data = fs.readFileSync(filePath, 'utf8')
+  return
+  console.log('DB[AT]')
+  //find existing workspace id, retrieve it, insert child, update
+
   /*const json: { workspaces: Workspace[] } = JSON.parse(data)
   const updatingIndex = json[key].findIndex((item) => item.id === id)
 
@@ -140,4 +124,19 @@ export function addTable(dbFile: string, id: string, newTable: Workspace) {
   json[key].splice(updatingIndex, 1, obj)
   fs.writeFileSync(filePath, JSON.stringify(json))
     */
+
+  const curWorkspace=findOne(filePath, 'workspaces', id)
+
+  const workspace: Workspace = {
+    id: id,
+    title: curWorkspace?.title,
+    buildShipments: [
+      {
+        id: uuidv4(),
+        buildNumber: '',
+        shipments: [{ id: uuidv4(), description: '', orderNumber: '', cost: 0 }],
+      },
+    ],
+  }
+
 }
