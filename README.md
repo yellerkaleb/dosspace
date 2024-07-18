@@ -21,3 +21,7 @@ This project contains a frontend and backend, with data stored in a JSON file.
 To run prettier, run `yarn prettier`.
 To run eslint, run `yarn eslint`.
 To run tests, run `yarn test --watchAll=false`.
+
+# Project Completed
+
+Test as indicated above. To test adding a record via API endpoint, try the following url: http://localhost:3000/fb374bf1-c76b-44b3-945b-ee03d35d7a3c/add?order=1234&build=5678&cost=9012&description=23456
