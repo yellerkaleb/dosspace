@@ -17,6 +17,16 @@ app.get('/reset', (req, res) => {
   res.send('Reset database')
 })
 
+/** Returns all workspaces in the database */
+app.get('/', (req, res) => {
+  const allWorkspaces = getWorkspaces(dbString)
+  const workspaces = allWorkspaces.map((workspace) => ({
+    id: workspace.id,
+    title: workspace.title,
+  }))
+  res.json({ workspaces })
+})
+
 /** Returns the workspace with the given ID */
 app.get('/:workspaceId', (req, res) => {
   res.json({ workspace: getWorkspace(dbString, req.params.workspaceId) })
@@ -28,16 +38,6 @@ app.post('/:workspaceId', (req, res) => {
   res.json({ workspace: updateWorkspace(dbString, workspace) })
 })
 
-/** Returns all workspaces in the database */
-app.get('/', (req, res) => {
-  const allWorkspaces = getWorkspaces(dbString)
-  const workspaces = allWorkspaces.map((workspace) => ({
-    id: workspace.id,
-    title: workspace.title,
-  }))
-  res.json({ workspaces })
-})
-
 /** Creates a new workspace in the database and returns it */
 app.post('/', (req, res) => {
   res.json({ workspace: createWorkspace(dbString) })
@@ -45,19 +45,21 @@ app.post('/', (req, res) => {
 
 /*GECKO add table to workspace*/
 app.get('/:workspaceId/add', (req, res) => {
-//  res.json({ workspace: getWorkspace(dbString, req.params.workspaceId) })
+  console.log(`Received request to add table to workspace ${req.params.workspaceId} with query parameters:`, req.query);
 
-  const { workspaceId } = req.params;
-  const build = req.query.build as string;
-  const order = req.query.order as string;
-  const cost = req.query.cost as string;
-  const description = req.query.description as string;
+  const { workspaceId } = req.params
+  const build = req.query.build as string
+  const order = req.query.order as string
+  const cost = req.query.cost as string
+  const description = req.query.description as string
   
   try {
-    const workspace = addWorkspace(dbString, workspaceId, build, order, cost, description)
-    res.json({ workspace: workspace })
+    const newWorkspaceTable = addWorkspace(dbString, workspaceId, build, order, cost, description)
+    res.json({ workspace: newWorkspaceTable })
+
   } catch (error) {
-    res.status(500).json({ error: 'Unable to add table to workspace' })
+    res.status(500).json({ error:'APP[add] Unable to add table to workspace' })
+
   }
   
 })
