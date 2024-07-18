@@ -45,24 +45,21 @@ app.post('/', (req, res) => {
 
 /*GECKO add table to workspace*/
 app.get('/:workspaceId/add', (req, res) => {
-  const { workspaceId } = req.params
-  const { build, order, cost, description } = req.query
-  console.log('APP[add]')
-  const newTable = {
-    build: build || '',
-    order: order || '',
-    cost: cost || '',
-    description: description || '',
-    id: '', // mock id
-    title: '', // mock title
-    buildShipments: [], // mock buildShipments
-  }
+//  res.json({ workspace: getWorkspace(dbString, req.params.workspaceId) })
+
+  const { workspaceId } = req.params;
+  const build = req.query.build as string;
+  const order = req.query.order as string;
+  const cost = req.query.cost as string;
+  const description = req.query.description as string;
+  
   try {
-    const updatedWorkspace = addWorkspace(dbString, workspaceId, newTable)
-    res.json({ workspace: updatedWorkspace })
+    const workspace = addWorkspace(dbString, workspaceId, build, order, cost, description)
+    res.json({ workspace: workspace })
   } catch (error) {
     res.status(500).json({ error: 'Unable to add table to workspace' })
   }
+  
 })
 
 module.exports = app

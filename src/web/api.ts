@@ -1,7 +1,5 @@
 import axios from 'axios'
 import { DetailWorkspace } from './components/WorkspaceDetails'
-import { Workspace } from '../api/types'
-import querystring from 'querystring'; // Import querystring for URL encoding
 
 
 
@@ -35,16 +33,14 @@ class DosspaceApi {
     }
   }
 
-
   /**GECKO add workspace table to existing record */
   static async addWorkspaceTable(workspaceId: string, build: string, order: string, cost: string, description: string): Promise<DetailWorkspace> { 
     try {
-      const req = await axios.get(`${BASE_URL}/${workspaceId}/add??build=${build}&order=${order}&cost=${cost}&description=${description}`);
+      const req = await axios.get(`${BASE_URL}/${workspaceId}/add?build=${build}&order=${order}&cost=${cost}&description=${description}`);
       const { workspace } = req.data      
       return workspace
 
     } catch (err) {
-      console.log('[AWT] Unable to add table to workspace', err);
       throw new Error('[AWT]Unable to add table to workspace')
 
     }

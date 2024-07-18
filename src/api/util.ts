@@ -43,8 +43,7 @@ export function resetWorkspace(dbString: string) {
 }
 
 /** GECKO add table to workspace */
-export function addWorkspace(dbString:string,id:string,newTable:Workspace):Workspace {
-  console.log('Util[AW]')
-  addTable(dbString, id, newTable)
-  return findOne(dbString, 'workspaces', id)
+export function addWorkspace(dbString:string,workspaceId: string, build: string, order: string, cost: string, description: string):Workspace {
+  addTable(dbString, workspaceId, build, order, parseInt(cost), description)
+  return findOne(dbString, 'workspaces', workspaceId)
 }

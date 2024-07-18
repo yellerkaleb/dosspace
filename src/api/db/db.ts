@@ -107,36 +107,40 @@ export function reset(dbFile: string, uuid?: string) {
 
 
 /** GECKO Add table to workspace */
-export function addTable(dbFile: string, id: string, newTable: Workspace) {
+export function addTable(dbFile: string, workspaceId: string, build: string, order: string, cost: number, description: string) {
   const filePath = getFilePath(dbFile) //GECKO
   const data = fs.readFileSync(filePath, 'utf8')
-  return
-  console.log('DB[AT]')
-  //find existing workspace id, retrieve it, insert child, update
+  const json: { workspaces: Workspace[] } = JSON.parse(data)
 
-  /*const json: { workspaces: Workspace[] } = JSON.parse(data)
-  const updatingIndex = json[key].findIndex((item) => item.id === id)
-
-  if (updatingIndex === -1) {
-    throw new Error('Could not find object with id "' + id + '"')
+  // Find the workspace by workspaceId
+  const workspaceIndex = json.workspaces.findIndex(workspace => workspace.id === workspaceId)
+  if (workspaceIndex === -1) {
+    throw new Error(`Workspace with id "${workspaceId}" not found`)
   }
 
-  json[key].splice(updatingIndex, 1, obj)
-  fs.writeFileSync(filePath, JSON.stringify(json))
-    */
-
-  const curWorkspace=findOne(filePath, 'workspaces', id)
-
-  const workspace: Workspace = {
-    id: id,
-    title: curWorkspace?.title,
-    buildShipments: [
-      {
-        id: uuidv4(),
-        buildNumber: '',
-        shipments: [{ id: uuidv4(), description: '', orderNumber: '', cost: 0 }],
-      },
-    ],
+  // Create the new shipment
+  const newShipment = {
+    id: uuidv4(),
+    description: description,
+    orderNumber: order,
+    cost: cost,
   }
 
+  // Find or create the buildShipment
+  const buildShipmentIndex = json.workspaces[workspaceIndex].buildShipments.findIndex(bs => bs.buildNumber === build)
+  if (buildShipmentIndex === -1) {
+    // If build shipment not found, create a new one
+    json.workspaces[workspaceIndex].buildShipments.push({
+      id: uuidv4(),
+      buildNumber: build,
+      shipments: [newShipment]
+    })
+  } else {
+    // If build shipment found, add the new shipment to it
+    json.workspaces[workspaceIndex].buildShipments[buildShipmentIndex].shipments.push(newShipment)
+  }
+
+  // Write the updated JSON back to the file
+  fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf8')
+  console.log('New shipment added successfully')
 }
